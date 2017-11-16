@@ -1,25 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { compose } from 'recompose'
+import { reduxForm } from 'redux-form'
+import { compose, withHandlers } from 'recompose'
 import { connect } from 'react-redux'
 
 import { selectUser as selectSelfUser } from '../../../Auth'
 import { sendMessage, selectIsSendingMessage } from '../..'
 
-import Form from './WriterForm'
-
-const Writer = ({ selfUser, sendMessage, isSendingMessage }) => (
-  <Form
-    onSubmit={({ message }) => sendMessage({ user: selfUser, message })}
-    isSendingMessage={isSendingMessage}
-  />
-)
-
-Writer.propTypes = {
-  selfUser: PropTypes.object,
-  sendMessage: PropTypes.func,
-  isSendingMessage: PropTypes.bool
-}
+import WriterForm from './WriterForm'
 
 const mapStateToProps = state => ({
   selfUser: selectSelfUser(state),
@@ -27,4 +13,16 @@ const mapStateToProps = state => ({
 })
 const mapDispatchToProps = { sendMessage }
 
-export default compose(connect(mapStateToProps, mapDispatchToProps))(Writer)
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: 'messenger'
+  }),
+  withHandlers({
+    onSubmit: ({ reset, sendMessage, selfUser, handleSubmit }) =>
+      handleSubmit(({ message }) => {
+        sendMessage({ user: selfUser, message })
+        reset()
+      })
+  })
+)(WriterForm)

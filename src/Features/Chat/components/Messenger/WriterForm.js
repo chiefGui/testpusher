@@ -1,5 +1,5 @@
 import React from 'react'
-import { Field, reduxForm } from 'redux-form'
+import { Field } from 'redux-form'
 import styled from 'styled-components'
 
 import colors from '../../../UI/variables/colors'
@@ -15,13 +15,8 @@ const MessageField = styled(Field)`
   font-size: 1.2em;
 `
 
-const Form = ({ handleSubmit, reset, submitting, isSendingMessage }) => (
-  <form
-    onSubmit={payload => {
-      handleSubmit(payload)
-      reset()
-    }}
-  >
+const Form = ({ onSubmit, reset, submitting, isSendingMessage }) => (
+  <form onSubmit={onSubmit}>
     <Container>
       <MessageField
         name='message'
@@ -35,6 +30,4 @@ const Form = ({ handleSubmit, reset, submitting, isSendingMessage }) => (
   </form>
 )
 
-export default reduxForm({
-  form: 'messenger'
-})(Form)
+export default Form

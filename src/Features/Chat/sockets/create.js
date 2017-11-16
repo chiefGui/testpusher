@@ -6,7 +6,7 @@ function create (user) {
   const socket = new Pusher('ce8ad1b39f01f774730d', {
     cluster: 'us2',
     encrypted: true,
-    authEndpoint: 'http://localhost:3100/pusher/auth',
+    authEndpoint: 'https://api-pinpggaflh.now.sh/pusher/auth',
     auth: {
       params: {
         user: user.displayName
